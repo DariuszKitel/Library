@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model IEnumerable<Library.Models.Book>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center mt-2">List of books</h1>
+<hr class="border-light" />
+<p>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus">&nbsp;Add Book</i></a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShortDescription)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReleaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShortDescription)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success text-white" style="cursor:pointer"><i class="fas fa-edit">Edit</i></a>
+                    @*<a asp-action="Show" asp-route-id="@item.Id" class="btn btn-primary text-white" style="cursor:pointer"><i class="fas fa-eye"> Show reservation</i></a> W tym przypadku nie udało się zaimplementować widoku rezerwacji dla pojedyńczej książki. Próbę można zobaczyć w kontrolerze Book i akcji Show*@
+                    @if (SignInManager.IsSignedIn(User))
+                    {     
+                        <a asp-action="Reservation" asp-route-id="@item.Id" class="btn btn-danger text-white" style="cursor:pointer"><i class="fas fa-book"> Book</i></a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
